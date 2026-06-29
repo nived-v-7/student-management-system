@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Presentation | Nexus Student Management System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --bg-app: #070a13;
+      --bg-gradient: radial-gradient(circle at top right, #1e1b4b 0%, #070a13 80%);
+      --bg-panel: rgba(17, 24, 39, 0.6);
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --accent-teal: #14b8a6;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border-glow: rgba(255, 255, 255, 0.08);
+      --blur-glass: blur(20px);
+      --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--bg-app);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* --- Presentation Window --- */
+    .presentation-container {
+      width: 90%;
+      max-width: 1100px;
+      height: 620px;
+      background: var(--bg-panel);
+      backdrop-filter: var(--blur-glass);
+      border: 1px solid var(--border-glow);
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Slides Wrapper --- */
+    .slides-wrapper {
+      flex: 1;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 3.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(50px);
+      transition: var(--transition-smooth);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .slide.previous {
+      transform: translateX(-50px);
+    }
+
+    /* --- Slide layouts --- */
+    .slide-title-layout {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 1.5rem;
+    }
+
+    .slide-title-layout img {
+      width: 480px;
+      border-radius: 16px;
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      margin-top: 1rem;
+    }
+
+    .slide-content-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      height: 100%;
+    }
+
+    .slide-full-layout {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    /* --- Slide Typography --- */
+    .slide-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+      color: var(--primary);
+      padding: 0.35rem 0.85rem;
+      border-radius: 30px;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      margin-bottom: 1.25rem;
+    }
+
+    .slide h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(to right, #ffffff, #c7d2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .slide h2 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 1.75rem;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    .bullet-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary);
+    }
+
+    .bullet-list li strong {
+      color: var(--accent-teal);
+    }
+
+    .slide-media img {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    /* --- Stats Grid for Slide --- */
+    .slide-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .slide-stat-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .slide-stat-num {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--accent-teal);
+      margin-bottom: 0.25rem;
+    }
+
+    .slide-stat-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* --- Controls Footer --- */
+    .presentation-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3.5rem;
+      border-top: 1px solid var(--border-glow);
+      background: rgba(10, 15, 28, 0.4);
+      z-index: 10;
+    }
+
+    .slide-counter {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .slide-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .dot.active {
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary);
+      transform: scale(1.25);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glow);
+      color: #fff;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-btn:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+    }
+
+    .nav-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Quick Link Back */
+    .back-link {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition-smooth);
+    }
+
+    .back-link:hover {
+      color: var(--primary);
+    }
+
+    .back-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-container">
+    <div class="slides-wrapper" id="slides-wrapper">
+      
+      <!-- Slide 1: Title -->
+      <div class="slide active">
+        <div class="slide-title-layout">
+          <span class="slide-badge">Academic Management System</span>
+          <h1>Nexus Academy Portal</h1>
+          <p style="font-size: 1.15rem; max-width: 600px;">A premium, full-stack student roster, catalog registry, and analytical grade management console built for modern schools.</p>
+          <img src="images/title_banner.png" alt="Title Graphic">
+        </div>
+      </div>
+
+      <!-- Slide 2: Executive Summary -->
+      <div class="slide">
+        <div class="slide-content-layout">
+          <div>
+            <span class="slide-badge">Core Objective</span>
+            <h2>Project Overview</h2>
+            <p>Nexus Student Management System replaces outdated administrative sheets with a lightning-fast, secure, and beautiful centralized full-stack dashboard.</p>
+            <ul class="bullet-list">
+              <li><strong>Simplified Administration</strong>: Single point of control for course registrations, roster modifications, and grade sheets.</li>
+              <li><strong>Analytical Insights</strong>: Instant distribution calculations and performance average tracking.</li>
+              <li><strong>Dynamic Design</strong>: Clean obsidian glassmorphism panels offering responsive, desktop-premium interfaces.</li>
+            </ul>
+          </div>
+          <div style="background: rgba(255,255,255,0.01); border: 1px dashed var(--border-glow); border-radius: 18px; padding: 2rem; text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎓</div>
+            <h4 style="color: #fff; margin-bottom: 0.5rem;">Nexus Academy</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Empowering administrators with modern software tools to track curriculums and monitor student outcomes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: System Architecture -->
+      <div class="slide">
+        <div class="slide-content-layout">
+          <div>
+            <span class="slide-badge">Tech Stack</span>
+            <h2>System Architecture</h2>
+            <p>Our stack prioritizes lightweight dependencies, rapid load times, and easy local execution on any system configuration.</p>
+            <ul class="bullet-list">
+              <li><strong>Express & Node.js Server</strong>: REST APIs serving structured endpoints with CORS configurations.</li>
+              <li><strong>JSON Data persistence</strong>: File-based persistence utilizing a self-repairing local JSON database structure.</li>
+              <li><strong>Vanilla CSS Design</strong>: Avoids heavy frameworks, utilizing CSS variables, responsive grids, and backdrop blur.</li>
+            </ul>
+          </div>
+          <div class="slide-media">
+            <img src="images/architecture_vector.png" alt="Architecture Graphic">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Key Modules Overview -->
+      <div class="slide">
+        <div class="slide-full-layout">
+          <div>
+            <span class="slide-badge">Curriculum Modules</span>
+            <h2>Key Modules Overview</h2>
+            <p>The application is divided into 4 primary modules, each accessible from the unified navigation sidebar.</p>
+          </div>
+          <div class="slide-stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 2rem;">
+            <div class="slide-stat-card">
+              <div class="slide-stat-num">01</div>
+              <div class="slide-stat-label" style="color:#3b82f6;">Dashboard</div>
+              <p style="font-size: 0.75rem; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4;">High-level analytical stats and system event feeds.</p>
+            </div>
+            <div class="slide-stat-card">
+              <div class="slide-stat-num">02</div>
+              <div class="slide-stat-label" style="color:var(--secondary);">Student Roster</div>
+              <p style="font-size: 0.75rem; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4;">Interactive table with CRUD modal operations.</p>
+            </div>
+            <div class="slide-stat-card">
+              <div class="slide-stat-num">03</div>
+              <div class="slide-stat-label" style="color:var(--accent-teal);">Course Catalog</div>
+              <p style="font-size: 0.75rem; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4;">Department lists and enrolled student drawers.</p>
+            </div>
+            <div class="slide-stat-card">
+              <div class="slide-stat-num">04</div>
+              <div class="slide-stat-label" style="color:var(--warning);">Grade Portal</div>
+              <p style="font-size: 0.75rem; margin-top: 0.5rem; margin-bottom: 0; line-height: 1.4;">Inline editable grades and letter spread tags.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Dashboard Analytics -->
+      <div class="slide">
+        <div class="slide-content-layout">
+          <div>
+            <span class="slide-badge">Module 1</span>
+            <h2>Overview Dashboard</h2>
+            <p>The central hub aggregates records into executive KPIs and logs background actions in real-time.</p>
+            <ul class="bullet-list">
+              <li><strong>Executive Indicators</strong>: Tally panels tracking total students, active courses, and enrollments.</li>
+              <li><strong>Enrollment Graphs</strong>: Beautiful SVG-drawn bar charts displaying department distributions dynamically.</li>
+              <li><strong>Action Feeds</strong>: Event logger mapping recent actions (e.g. grade updates, additions) with "time ago" formatting.</li>
+            </ul>
+          </div>
+          <div class="slide-stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <div class="slide-stat-card">
+              <div class="slide-stat-num" style="color: var(--primary);">8.89</div>
+              <div class="slide-stat-label">Initial CGPA</div>
+            </div>
+            <div class="slide-stat-card">
+              <div class="slide-stat-num" style="color: var(--accent-teal);">14</div>
+              <div class="slide-stat-label">Enrollments</div>
+            </div>
+            <div class="slide-stat-card" style="grid-column: span 2;">
+              <div style="font-size: 0.8rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem;">Dynamic Bar chart</div>
+              <div style="height: 12px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden;">
+                <div style="width: 80%; height: 100%; background: linear-gradient(to right, var(--primary), var(--secondary));"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Student Roster Directory -->
+      <div class="slide">
+        <div class="slide-content-layout">
+          <div>
+            <span class="slide-badge">Module 2</span>
+            <h2>Student Directory</h2>
+            <p>A high-performance student database layout supporting extensive filter and query combinations.</p>
+            <ul class="bullet-list">
+              <li><strong>Real-time Search</strong>: Instant filters that search matching student names, emails, or IDs.</li>
+              <li><strong>Enrollment Badges</strong>: Status tags mapping active, suspended, or graduated students in color-coded pills.</li>
+              <li><strong>Pop-up Modals</strong>: Standard, unified modals supporting profile creations and editing actions.</li>
+            </ul>
+          </div>
+          <div class="slide-media">
+            <img src="images/roster_vector.png" alt="Roster Graphic">
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Course Catalog -->
+      <div class="slide">
+        <div class="slide-content-layout">
+          <div>
+            <span class="slide-badge">Module 3</span>
+            <h2>Course Catalog</h2>
+            <p>Curriculum records are presented in modern visual cards listing credit tallies and assignees.</p>
+            <ul class="bullet-list">
+              <li><strong>Instructor Mapping</strong>: Quick visual references of director-instructors (e.g. Dr. Alan Turing).</li>
+              <li><strong>Student counters</strong>: Displaying the number of active enrollments in each catalog block.</li>
+              <li><strong>Detail Side-Drawer</strong>: A slide-in drawer layout displaying the roster of enrolled students without page reload.</li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-panel); border: 1px solid var(--border-glow); border-radius: 16px; padding: 1.5rem;">
+            <div style="font-size: 0.7rem; font-weight: 700; color: var(--secondary); background: rgba(139, 92, 246, 0.15); padding: 0.25rem 0.5rem; border-radius: 4px; display: inline-block; margin-bottom: 0.75rem;">CS-101</div>
+            <h4 style="color:#fff; margin-bottom: 0.5rem;">Intro to Computer Science</h4>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.75rem;">Instructor: Dr. Alan Turing</p>
+            <hr style="border-color: rgba(255,255,255,0.05); margin-bottom: 0.75rem;">
+            <span style="font-size: 0.75rem; color: var(--accent-teal); font-weight: 700;">4 Enrolled Students</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Grade Portal -->
+      <div class="slide">
+        <div class="slide-content-layout">
+          <div>
+            <span class="slide-badge">Module 4</span>
+            <h2>Grade Portal</h2>
+            <p>Enables grading administrators to evaluate student outcomes and update sheets inline.</p>
+            <ul class="bullet-list">
+              <li><strong>Inline Autosave</strong>: Direct grade number cell inputs. Triggers instant database updates on click-out (blur) or Enter key.</li>
+              <li><strong>GPA Calculations</strong>: Automated calculations for letter symbols (A, B, C, D, F) and 10.0 scale GPA scores.</li>
+              <li><strong>Performance spreads</strong>: Breakdown panels outlining aggregate grade letters.</li>
+            </ul>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glow); border-radius: 16px; padding: 1.5rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: #fff; margin-bottom: 1rem;">Auto-Save Input Flow</div>
+            <div style="display: flex; gap: 0.50rem; align-items: center;">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Grade Score:</span>
+              <span style="background:rgba(255,255,255,0.05); padding: 0.35rem 0.75rem; border-radius: 6px; color:#fff; font-weight:700; border: 1px solid var(--primary);">95</span>
+              <span style="font-size: 1.25rem; color: var(--primary);">➔</span>
+              <span style="background:rgba(16, 185, 129, 0.15); color: var(--success); padding: 0.25rem 0.5rem; border-radius: 4px; font-weight:700;">A</span>
+              <span style="font-size: 1.25rem; color: var(--primary);">➔</span>
+              <span style="font-weight:700; color: #fff;">9.50 GPA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: API Schema -->
+      <div class="slide">
+        <div class="slide-full-layout">
+          <div>
+            <span class="slide-badge">Backend Interfaces</span>
+            <h2>Database Schema & REST APIs</h2>
+            <p>Our REST interfaces are organized logically to ensure complete security, scalability, and easy client mappings.</p>
+          </div>
+          <div class="slide-stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 2rem;">
+            <div class="slide-stat-card" style="text-align: left;">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--accent-teal); margin-bottom: 0.5rem;">/api/students</div>
+              <p style="font-size: 0.725rem; color: var(--text-muted); line-height: 1.4;"><strong>GET</strong>: Fetch student directory with GPA summaries.<br><strong>POST</strong>: Register profile.<br><strong>DELETE</strong>: Remove student.</p>
+            </div>
+            <div class="slide-stat-card" style="text-align: left;">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">/api/courses</div>
+              <p style="font-size: 0.725rem; color: var(--text-muted); line-height: 1.4;"><strong>GET</strong>: Fetch course grid with tally counters.<br><strong>POST</strong>: Create course.<br><strong>DELETE</strong>: Remove course.</p>
+            </div>
+            <div class="slide-stat-card" style="text-align: left;">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">/api/grades</div>
+              <p style="font-size: 0.725rem; color: var(--text-muted); line-height: 1.4;"><strong>GET</strong>: Flattened list of course grades.<br><strong>PUT</strong>: Insert or update numeric scores inline.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 10: UI/UX Philosophy -->
+      <div class="slide">
+        <div class="slide-content-layout">
+          <div>
+            <span class="slide-badge">Aesthetics</span>
+            <h2>UI & UX Design Philosophy</h2>
+            <p>Nexus Academy features premium visual parameters tailored to wow administrators at first glance.</p>
+            <ul class="bullet-list">
+              <li><strong>Obsidian Glassmorphism</strong>: Backdrop-blur panels blending borders and dark radial backgrounds.</li>
+              <li><strong>Fluid Animation</strong>: CSS transit coordinates ensuring spring-loaded triggers for clicks, card hovers, and modals.</li>
+              <li><strong>Contrast & Focus</strong>: Deep dark backgrounds with high-contrast text and glowing badges.</li>
+            </ul>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="background: linear-gradient(to right, rgba(99, 102, 241, 0.1), transparent); border: 1px solid var(--border-glow); padding: 0.85rem 1.25rem; border-radius: 10px; font-size: 0.8rem; color: #fff;">
+              ✨ Backdrop Blur (20px)
+            </div>
+            <div style="background: linear-gradient(to right, rgba(139, 92, 246, 0.1), transparent); border: 1px solid var(--border-glow); padding: 0.85rem 1.25rem; border-radius: 10px; font-size: 0.8rem; color: #fff;">
+              💫 Elastic Hover Interactions
+            </div>
+            <div style="background: linear-gradient(to right, rgba(20, 184, 166, 0.1), transparent); border: 1px solid var(--border-glow); padding: 0.85rem 1.25rem; border-radius: 10px; font-size: 0.8rem; color: #fff;">
+              🎨 Harmonious Glowing Accent Colors
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 11: Future Roadmap -->
+      <div class="slide">
+        <div class="slide-content-layout">
+          <div>
+            <span class="slide-badge">Roadmap</span>
+            <h2>Future Enhancements</h2>
+            <p>Our modular setup is engineered to support future feature integrations without breaking existing modules.</p>
+            <ul class="bullet-list">
+              <li><strong>SQL Database Migration</strong>: Quick connection mapping to PostgreSQL/MySQL via Sequelize or Prisma.</li>
+              <li><strong>Role-Based Authentication</strong>: Admin, Instructor, and Student portals with specific edit permissions.</li>
+              <li><strong>Report Generation</strong>: One-click PDF transcript downloads for student directories and GPA records.</li>
+            </ul>
+          </div>
+          <div style="background: rgba(20, 184, 166, 0.05); border: 1px solid rgba(20, 184, 166, 0.2); border-radius: 18px; padding: 2rem; text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent-teal);">🚀</div>
+            <h4 style="color: #fff; margin-bottom: 0.5rem;">Scalable Foundation</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">The project provides a highly robust blueprint to expand into a production-grade educational platform.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Controls Footer -->
+    <div class="presentation-controls">
+      <div class="slide-counter" id="slide-counter">Slide 1 of 11</div>
+      
+      <div class="slide-dots" id="slide-dots">
+        <!-- Dots injected here -->
+      </div>
+      
+      <div class="nav-buttons">
+        <button class="nav-btn" id="prev-btn" title="Previous Slide (Left Arrow)">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <button class="nav-btn" id="next-btn" title="Next Slide (Right Arrow / Space)">
+          <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    Return to Dashboard Portal
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.slide');
+      const dotsContainer = document.getElementById('slide-dots');
+      const counter = document.getElementById('slide-counter');
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      
+      let currentSlide = 0;
+      const totalSlides = slides.length;
+
+      // Create dots
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.className = `dot ${i === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+      }
+      
+      const dots = document.querySelectorAll('.dot');
+
+      function updateControls() {
+        counter.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+        
+        dots.forEach((dot, idx) => {
+          if (idx === currentSlide) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+      }
+
+      function goToSlide(index) {
+        if (index < 0 || index >= totalSlides) return;
+        
+        slides[currentSlide].classList.remove('active');
+        slides[currentSlide].classList.remove('previous');
+        
+        if (index > currentSlide) {
+          slides[currentSlide].classList.add('previous');
+        }
+
+        currentSlide = index;
+        slides[currentSlide].classList.add('active');
+        
+        updateControls();
+      }
+
+      function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+          goToSlide(currentSlide + 1);
+        } else {
+          // Loop back to start
+          goToSlide(0);
+        }
+      }
+
+      function prevSlide() {
+        if (currentSlide > 0) {
+          goToSlide(currentSlide - 1);
+        } else {
+          // Loop back to end
+          goToSlide(totalSlides - 1);
+        }
+      }
+
+      // Button listeners
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevSlide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

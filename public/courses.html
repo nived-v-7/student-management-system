@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Management | Nexus Student Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+          </svg>
+        </div>
+        <span class="brand-name">Nexus Academy</span>
+      </div>
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-item" id="nav-dashboard">
+          <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="students.html" class="nav-item" id="nav-students">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <span>Students</span>
+        </a>
+        <a href="courses.html" class="nav-item active" id="nav-courses">
+          <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm-1 9H5v-2h6v2zm0-4H5V6h6v2zm6 4h-4v-2h4v2zm0-4h-4V6h4v2z"/></svg>
+          <span>Courses</span>
+        </a>
+        <a href="grades.html" class="nav-item" id="nav-grades">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2zm0 8H7v-2h10v2z"/></svg>
+          <span>Grade Portal</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-avatar">AD</div>
+        <div class="user-info">
+          <div class="user-name">Admin Director</div>
+          <div class="user-role">Super User</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <header class="content-header">
+        <div class="page-title">
+          <h1>Course Catalog</h1>
+          <p>Register curriculum courses, view student tallies, and assign department directors.</p>
+        </div>
+      </header>
+
+      <!-- Filter / Action Row -->
+      <section class="action-row">
+        <div class="filter-group">
+          <div class="search-container">
+            <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="search-course" class="search-input" placeholder="Search course code, title, or instructor...">
+          </div>
+          <select id="filter-category" class="select-input">
+            <option value="">All Categories</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Science">Science</option>
+            <option value="Business">Business</option>
+            <option value="Literature">Literature</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="btn-add-course">
+          <span class="btn-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          </span>
+          Create New Course
+        </button>
+      </section>
+
+      <!-- Grid of Course Cards -->
+      <section class="course-grid" id="course-grid">
+        <!-- Dynamically populated cards -->
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Fetching courses catalog...</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add / Edit Course Modal -->
+  <div class="modal-overlay" id="course-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modal-title">Create Course</h3>
+        <button class="drawer-close" id="modal-close">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <form id="course-form">
+        <div class="form-group">
+          <label for="course-id">Course Code</label>
+          <input type="text" id="course-id" class="form-control" placeholder="e.g. CS-101" required>
+        </div>
+        <div class="form-group">
+          <label for="course-name">Course Title</label>
+          <input type="text" id="course-name" class="form-control" placeholder="e.g. Programming Methodologies" required>
+        </div>
+        <div class="form-group">
+          <label for="course-instructor">Instructor Name</label>
+          <input type="text" id="course-instructor" class="form-control" placeholder="e.g. Dr. Alan Turing" required>
+        </div>
+        <div class="form-group">
+          <label for="course-category">Department / Category</label>
+          <select id="course-category" class="form-control" style="cursor: pointer;">
+            <option value="Computer Science">Computer Science</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Science">Science</option>
+            <option value="Business">Business</option>
+            <option value="Literature">Literature</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="course-credits">Credits</label>
+          <select id="course-credits" class="form-control" style="cursor: pointer;">
+            <option value="1">1 Credit</option>
+            <option value="2">2 Credits</option>
+            <option value="3">3 Credits</option>
+            <option value="4" selected>4 Credits</option>
+            <option value="5">5 Credits</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-course">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-course">Save Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Side Drawer Details (Enrolled Students List) -->
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+  <div class="drawer-panel" id="drawer-panel">
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-title" id="drawer-title">Course Roster</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;" id="drawer-subtitle">
+          CS-101 Enrolled Students
+        </div>
+      </div>
+      <button class="drawer-close" id="drawer-close">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    
+    <div class="drawer-content">
+      <div class="drawer-student-list" id="drawer-student-list">
+        <!-- Dynamically populated students list -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/courses.js"></script>
+</body>
+</html>
